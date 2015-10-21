@@ -25,5 +25,4 @@ public class LibraryParser {
 		return new CheckoutItem(items[0], items[1], 
 				LocalDate.parse(items[2]));
 	}
-
 }
