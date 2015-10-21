@@ -24,6 +24,8 @@ public class DieTest {
 	@Category(value = UnitTest.class)
 	public void testBasicRollWith4() {
 		// Stub
+
+		@SuppressWarnings("serial")
 		Random random = new Random() {
 			@Override
 			public int nextInt() {
@@ -39,6 +41,7 @@ public class DieTest {
 	@Category(value = UnitTest.class)
 	public void testBasicRollWith4MultipleTimes() {
 		// Stub
+		@SuppressWarnings("serial")
 		Random random = new Random() {
 			@Override
 			public int nextInt() {
