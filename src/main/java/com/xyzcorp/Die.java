@@ -4,6 +4,7 @@ import java.util.Random;
 
 public class Die {
 
+	public static final int MAX_SIDES = 6;
 	public static final String RANDOM_CANNOT_BE_NULL = 
 			"Random cannot be null";
 	private Random random;
@@ -26,6 +27,6 @@ public class Die {
 	}
 
 	public Die roll() {
-		return new Die(random, random.nextInt(6) + 1);
+		return new Die(random, random.nextInt(MAX_SIDES) + 1);
 	}
 }

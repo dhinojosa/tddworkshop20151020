@@ -9,17 +9,24 @@ import org.mockito.Mockito;
 
 import java.util.Random;
 
+import org.junit.After;
 import org.junit.Assert;
-
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 public class DieTest {
 
+	private Random mock;
+
+	@Before
+	public void startUp() {
+		mock = Mockito.mock(Random.class);
+	}
+
 	@Test
 	@Category(value = UnitTest.class)
 	public void testDefaultIs1() {
-		Random mock = Mockito.mock(Random.class);
 		Die die = new Die(mock);
 		Assert.assertEquals(1, die.getPips());
 	}
@@ -28,7 +35,6 @@ public class DieTest {
 	@Category(value = UnitTest.class)
 	public void testBasicRollWith4() {
 		// Stub
-
 		@SuppressWarnings("serial")
 		Random random = new Random() {
 			@Override
@@ -80,27 +86,25 @@ public class DieTest {
 			assertThat(result).isLessThan(7).isGreaterThan(0);
 		}
 	}
-	
+
 	@Test
 	@Category(value = UnitTest.class)
 	public void testBUG3010() {
-	    Random random = mock(Random.class);
-	    
-	    when(random.nextInt(6)).thenReturn(4);
-	    
-	    Die die = new Die(random);
-	    assertThat(die.roll().getPips())
-	    .isGreaterThan(0).isLessThan(7);
+		when(mock.nextInt(6)).thenReturn(4);
+		Die die = new Die(mock);
+		assertThat(die.roll().getPips()).isGreaterThan(0).isLessThan(7);
 	}
-	
+
 	@Test
 	@Category(value = UnitTest.class)
 	public void testBUG3010WithZero() {
-	    Random random = mock(Random.class);
-	    
-	    when(random.nextInt(6)).thenReturn(0);
-	    
-	    Die die = new Die(random);
-	    assertThat(die.roll().getPips()).isEqualTo(1);
+		when(mock.nextInt(6)).thenReturn(0);
+		Die die = new Die(mock);
+		assertThat(die.roll().getPips()).isEqualTo(1);
+	}
+
+	@After
+	public void cleanUp() {
+		mock = null;
 	}
 }
