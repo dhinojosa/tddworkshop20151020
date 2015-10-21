@@ -26,6 +26,6 @@ public class Die {
 	}
 
 	public Die roll() {
-		return new Die(random, random.nextInt());
+		return new Die(random, random.nextInt(6) + 1);
 	}
 }
