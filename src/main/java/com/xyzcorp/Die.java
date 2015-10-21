@@ -2,7 +2,7 @@ package com.xyzcorp;
 
 import java.util.Random;
 
-public class Die {
+public class Die  {
 
 	public static final int MAX_SIDES = 6;
 	public static final String RANDOM_CANNOT_BE_NULL = 
