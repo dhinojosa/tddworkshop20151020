@@ -1,6 +1,9 @@
 package com.xyzcorp;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class LibraryParser {
 
@@ -24,5 +27,18 @@ public class LibraryParser {
 			IllegalArgumentException("Too few items parsed");
 		return new CheckoutItem(items[0], items[1], 
 				LocalDate.parse(items[2]));
+	}
+
+	public List<CheckoutItem> parse(List<String> items) {
+		List<CheckoutItem> result = 
+				new ArrayList<CheckoutItem>();
+		for (String item: items) {
+			try {
+			result.add(parse(item));
+			} catch (IllegalArgumentException iae) {
+				//log it
+			}
+		}
+	    return result;
 	}
 }

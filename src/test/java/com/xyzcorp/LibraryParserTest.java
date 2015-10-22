@@ -6,6 +6,8 @@ import static org.junit.Assert.fail;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -59,7 +61,7 @@ public class LibraryParserTest {
 			assertThat(iae).hasMessage("Malformed Line");
 		}
 	}
-	
+
 	@Test
 	@Category(value = UnitTest.class)
 	public void testParseLineToObjectWithParseItemsLessThan3() {
@@ -72,7 +74,7 @@ public class LibraryParserTest {
 			assertThat(iae).hasMessage("Too few items parsed");
 		}
 	}
-	
+
 	@Test
 	@Category(value = UnitTest.class)
 	public void testParseLineWithNullLine() {
@@ -85,7 +87,7 @@ public class LibraryParserTest {
 			assertThat(iae).hasMessage("Malformed Line");
 		}
 	}
-	
+
 	@Test
 	@Category(value = UnitTest.class)
 	public void testConstructionWithNullDelimeter() {
@@ -95,5 +97,45 @@ public class LibraryParserTest {
 		} catch (IllegalArgumentException iae) {
 			assertThat(iae).hasMessage("Delimeter is null");
 		}
+	}
+
+	@Test
+	@Category(value = UnitTest.class)
+	public void testParseThreeItems() {
+		List<String> items = new ArrayList<String>();
+        items.add("Dave~Book A~2015-10-01");
+        items.add("John~Book B~2015-09-13");
+        items.add("Ann~Book C~2015-08-05");
+        LibraryParser libraryParser = new LibraryParser("~");
+		List<CheckoutItem> checkoutItems = 
+				libraryParser.parse(items);
+		assertThat(checkoutItems).hasSize(3);
+		assertThat(checkoutItems.get(0)
+				.getName()).isEqualTo("Dave");
+		assertThat(checkoutItems.get(1)
+				.getTitle()).isEqualTo("Book B");
+		assertThat(checkoutItems.get(2)
+				.getCheckoutDate())
+		        .isEqualTo(LocalDate.of(2015, 8, 5));
+	}
+	
+	@Test
+	@Category(value = UnitTest.class)
+	public void testParseThreeItemsWithOneItemBlank() {
+		List<String> items = new ArrayList<String>();
+        items.add("Dave~Book A~2015-10-01");
+        items.add("");
+        items.add("Ann~Book C~2015-08-05");
+        LibraryParser libraryParser = new LibraryParser("~");
+		List<CheckoutItem> checkoutItems = 
+				libraryParser.parse(items);
+		assertThat(checkoutItems).hasSize(2);
+		assertThat(checkoutItems.get(0)
+				.getName()).isEqualTo("Dave");
+		assertThat(checkoutItems.get(1)
+				.getTitle()).isEqualTo("Book C");
+		assertThat(checkoutItems.get(1)
+				.getCheckoutDate())
+		        .isEqualTo(LocalDate.of(2015, 8, 5));
 	}
 }
